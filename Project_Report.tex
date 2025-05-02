@@ -1,0 +1,217 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{titlesec}
+
+
+
+% Custom header from second page onward
+\fancypagestyle{mainpages}{
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \fancyhead[L]{\textit{Dara Pooja}}
+  \fancyhead[R]{\textit{CS1023-SDF Final Project}}
+}
+
+\begin{document}
+
+% --- Custom Title Page ---
+\begin{titlepage}
+    \centering
+    \vspace*{4cm}
+    
+    {\Huge \bfseries CS1023 Final Project Report \par}
+    \vspace{0.2cm}
+    {\Huge  Java-Based Arbitrary Precision Arithmetic Calculator \par}
+    \vspace{2cm}
+    
+    {\fontsize{16pt}{30pt}\selectfont \textbf{Course Name:} Software Development Fundamentals \par}
+    \vspace{1cm}
+    {\fontsize{16pt}{30pt}\selectfont \textbf{Submitted by:}\par}
+    {\fontsize{16pt}{30pt}\selectfont Dara Pooja\par}
+    {\fontsize{14pt}{30pt}\selectfont CS24BTECH11021\par}
+    \vspace{4cm}
+    {\fontsize{14pt}{30pt}\selectfont Indian Institute of Technology Hyderabad\par}
+    \vfill
+    \thispagestyle{empty} % No header or footer on title page
+\end{titlepage}
+
+% --- Main Content with Custom Header ---
+\pagestyle{mainpages}
+
+\section{\fontsize{16pt}{30pt}Abstract}
+
+ \begin{spacing}{1.5}{\large This project implements an arbitrary precision arithmetic library in Java to perform basic arithmetic operations (addition, subtraction, multiplication, and division) on integers and floating-point numbers of arbitrary size and precision. The library consists of two main classes: AInteger for large integers and AFloat for high-precision floating-point numbers. Using operator overloading, these classes handle operations beyond the range of Java’s native data types. The project demonstrates the application of object-oriented programming (OOP) concepts and provides a robust solution for calculations requiring high precision. The report covers the design, implementation, usage, and testing of the library, as well as the integration of build tools like Ant and Python.}
+ \end{spacing}
+
+\section{\fontsize{16pt}{30pt}Introduction}
+
+\begin{spacing}{1.5}{\large This project implements an arbitrary-precision arithmetic library, enabling operations on integers and floating-point numbers without the limitations of standard Java data types such as \textbf{int, long, float} and \textbf{double}. It allows calculations on numbers of any size or precision with high accuracy.\\
+\\
+The main components of the project are:
+\begin{itemize}
+    \item\textbf{AInteger Class}   : Handles arithmetic operations for arbitrary-precision integers.
+    
+    \item\textbf{AFloat Class}     : Handles arithmetic operations for arbitrary-precision floating-point numbers.
+   
+    \item\textbf{MyInfArith Class} : The driver class that manages user input and performs the requested operations.
+   
+    \item\textbf{Ant Build Script} : Automates the building, compiling, and running of the project
+   
+    \item\textbf{python Script}    : Provides a simple command-line interface to compile and execute the project easily.
+\end{itemize}
+
+\subsection{Standard Types vs. Custom Arbitrary-Precision Types}
+
+Java's built-in numeric types have fixed ranges, which limit their ability to handle very large numbers or precise floating-point calculations. The ranges of these types are:
+\begin{itemize}
+    \item\textbf{int}: A 32-bit signed integer, with values ranging from \(-2^{31}\) to \(2^{31} - 1\).
+    \item\textbf{long}: A 64-bit signed integer, with values ranging from \(-2^{63}\) to \(2^{63} - 1\).
+    \item\textbf{float}: A 32-bit floating-point number, capable of representing values approximately from \(\pm 3.4 \times 10^{38}\), with 7 digits of precision.
+    \item\textbf{double}: A 64-bit floating-point number, capable of representing values approximately from \(\pm 1.8 \times 10^{308}\), with 15-16 digits of precision.
+    
+\end{itemize}
+
+These built-in types are useful but cannot handle calculations requiring much larger numbers or higher precision. In contrast, the \textbf{AInteger} and \textbf{AFloat} classes in this project remove these limitations. They allow for the handling of numbers with arbitrary size and precision, making them ideal for high-precision arithmetic and large-scale calculations.}
+ \end{spacing}
+\begin{spacing}{1.5}{\large
+\section{Project Features}
+\textbf{ \large A brief description of the main components:}
+\begin{itemize}
+  \item\textbf{MyInfArith :} The \texttt{MyInfArith} class is not located in the same directory as \texttt{AInteger} and \texttt{AFloat}, but it is used to execute the given test cases. Let's take a look at this in the 'Build and Run' section and 'file description' section.
+  \item\textbf{Ant file:}The \texttt{Ant} file contains targets for \texttt{compile}, \texttt{clean}, \texttt{jar}, and \texttt{run}. Let's also take a look at this in the 'Build and Run' section and 'file description' section .
+  \item \textbf{AInteger.java :}
+   The \texttt{AInteger} class is designed to represent integer values with additional features for performing mathematical operations such as addition, subtraction, multiplication, and division. This class also includes input validation to ensure only valid integer values are processed and allows normalization of the integer values to a specific range.
+   \begin{itemize}
+       \item In this implementation, the numbers are input as strings, which allows for arbitrary length.
+       \item In this the operations are performed digit to digit.
+   \end{itemize}
+
+  
+  \item \textbf{AFloat.java :}
+   The \texttt{AFloat} class is designed to represent float values with additional features for performing mathematical operations similar to AInteger class.
+   \begin{itemize}
+       \item In this implementation, the numbers are input as strings, which allows for arbitrary length.
+       \item In this the operations are performed digit to digit.
+   \end{itemize}
+\end{itemize}
+In both classes, StringBuilder is used to construct the result digit by digit. This approach is memory-efficient compared to string concatenation. Initially, using plain string operations led to an OutOfMemoryError, which was resolved by switching to StringBuilder.
+\subsection{UML Diagram of AInteger and AFloat Classes}
+
+    \begin{center}
+    \includegraphics[width=0.95\textwidth]{UMLdiagram_SDF.png}  % Make sure the image is in the same folder
+    \end{center}  
+\section{File description}
+\subsection{MyInfArith}The MyInfArith class serves as the entry point for running the arbitrary-precision arithmetic operators.It accepts command-line arguments to specify the operation (such as addition, subtraction, multiplication, or division) and the operands (either integers or floating-point values). Depending on the type of operation, the corresponding class (AInteger or AFloat) is used to perform the calculation.
+ \begin{itemize}
+     \item Depends on the operation required and type of operands the required operation is invoked from AInteger or AFloat.
+ \end{itemize}
+ \subsection{Ant Build file(build.xml)}The Ant file automates compilation,clean,run test case and creating jars using the following targets:
+ \begin{itemize}
+     \item \textbf{Compile : } Compile all java source files.
+     \item \textbf{Clean :}To delete the compiled files generated by the 'compile' target (which forms the 'build' directory) and the JAR file created by the 'jar' target (which forms the 'lib' directory), use the 'clean' target.
+     \item\textbf{jar :} Packages the compiled classes into a JAR file for easier distribution and execution.
+     \item\textbf{run :} Executes the MyInfArith class, passing the appropriate arguments to perform the arithmetic operations.
+ \end{itemize}
+ \subsection{runproject.py:}
+ \begin{itemize}
+     \item A Pythonscript to compile and run MyInfArith.java 
+     \item Accepts 4 command-line arguments: type, operation, operand1, and operand2.
+     \item Uses subprocess.run() to handle Java compilation and execution.
+     \item Displays result or error based on Java program output.
+ \end{itemize}
+
+\section{Testing}
+ Correctness of the functions of these classes was mainly tested manually, with comprehensive test cases for both integer and float operations.
+ \subsection{AInteger}
+ \begin{enumerate}
+     \item \( 12345 + 67890 = 80235 \)
+     \item \( 50000 + (-20000) = 30000 \)
+    \item \( 0012345 + 067890 = 80235 \)
+    \item \( 100000 - 23456 = 76544 \)
+    \item \( 23456 - 100000 = -76544 \)
+    \item \( 999999999999999999999999 - 111111111111111111111111 = 888888888888888888888888 \)
+    \item \( 12345 \times 67890 = 838102050 \)
+    \item \( 12345 \times (-67890) = -838102050 \)
+    \item \( 12345 \times 0 = 0 \)
+    \item \( 100000 \div 4 = 25000 \)
+ \end{enumerate}
+ \subsection{AFloat}
+ \begin{enumerate}
+    \item \( 12.5 + 7.3 = 19.8 \)
+    \item \( -15.75 + 5.25 = -10.5 \)
+    \item \( 0.000123 + 0.000877 = 0.001 \)
+    \item \( 1000.5 - 500.25 = 500.25 \)
+    \item \( 500.25 - 1000.5 = -500.25 \)
+    \item \( 123456789.12345 + 987654321.87655 = 1111111111.0 \)
+    \item \( 1.5 \times 4.0 = 6.0 \)
+    \item \( -2.25 \times 3.0 = -6.75 \)
+    \item \( 3.1415 \times 0 = 0 \)
+    \item \( 22.0 \div 7.0 = 3.142857142857142857142857142857 \) 
+\end{enumerate}
+
+\section{Build and Run}
+\subsection{Exexuting through MyInfArith}
+\begin{itemize}
+    \item javac MyInfArith.java
+    \item java MyInfArith \texttt{<type> <operation> <operand1> <operand2>}\\
+    type  = int/float\\
+    operation = add/sub/mul/div
+\end{itemize}
+\subsection{Executing through .jar file}
+ If we run \textbf{ant jar} The jar file is created.\\
+ A JAR file (Java ARchive) is a package file format used to bundle multiple Java class files, associated metadata, and resources (such as images, configuration files, etc.) into a single file. It’s essentially a zip file with a .jar extension that is used for storing and distributing Java applications or libraries.\\
+ And it serves the following purposes:
+ \begin{itemize}
+     \item JAR files allow developers to bundle all components of a Java application or library into one single file, simplifying distribution and deployment.
+     \item The JAR file is created through an automated build process defined in the build.xml Ant file. This file compiles the Java classes and packages them into the JAR.
+ \end{itemize}
+ To run test-cases we should use:
+ \begin{itemize}
+     \item ant jar
+     \item java -cp lib/aarithmetic.jar MyInfArith \texttt{<type> <operation> <operand1> <operand2>}
+ \end{itemize}
+
+\subsection{Executing through \texttt{run\_project.py}}
+Python script that compiles and runs the Java project using command-line arguments\\
+Help automate command-line execution in a repeatable way.\\
+Through this I understood how to use Python for scripting and automation.
+\begin{itemize}
+    \item python \texttt{run\_project.py} --compile
+    \item  python \texttt{run\_project.py} --run \texttt{<type> <operation> <operand1> <operand2>}
+\end{itemize}
+
+
+\section{Conclusions}
+\begin{itemize}
+    \item Arbitrary Precision Arithmetic:
+    \begin{itemize}
+        \item Handling numbers beyond standard data types (int, double).
+        \item Implementing operator overloading for large numbers. 
+    \end{itemize}
+    \item Object-Oriented Programming:
+    \begin{itemize}
+        \item Designing classes (AInteger, AFloat) and encapsulating logic.
+        \item Using constructors, copy constructors, and static methods.
+    \end{itemize}
+    \item Build Automation (Ant):
+    \begin{itemize}
+        \item Automating compilation, packaging, and testing using Ant.
+        \item Understanding the importance of build tools in large projects.
+    \end{itemize}
+    \item Integration of Tools:
+    \begin{itemize}
+        \item Combining Ant, Python, and Java for streamlined project management
+    \end{itemize}
+    \item How to use .Jar packages in files
+    \item using python to build execution scripts.
+
+\end{itemize}
+
+ }\end{spacing}
+
+
+
+\end{document}
