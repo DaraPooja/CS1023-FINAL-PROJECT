@@ -1,0 +1,53 @@
+<project name="ArbitraryArithmetic" default="compile" basedir=".">
+<!--Here name can be anything in project and by default it is compiling-->
+<!--Here basedir=. means considering files present in the same directory as xml file or if you want you can add path -->
+
+
+<!--Here name is like variable name and it's value is value--> 
+  <property name="src.dir" value="src"/>
+  <property name="build.dir" value="build"/>
+  <property name="lib.dir" value="lib"/>
+  <property name="main.class" value="MyInfArith"/>
+
+
+  <!-- Cleaning the created directories -->
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+    <delete dir="${lib.dir}"/>
+  </target>
+
+
+  <!-- Compile all source Java files and saves created class files to build directory -->
+  <target name="compile">
+    <mkdir dir="${build.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+  </target>
+
+
+
+<!--For below targets depends implies that before implenting the given target it implements the target on which it dependes -->
+
+  <!-- Create a jar file  and save it in lib directory-->
+  <target name="jar" depends="compile">
+    <mkdir dir="${lib.dir}"/>
+    <jar destfile="${lib.dir}/aarithmetic.jar" basedir="${build.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="${main.class}"/>
+      </manifest>
+    </jar>
+  </target>
+
+
+
+  <!--In these testcases they use MyInfArith java class and fork means safer and cleaner process-->
+  <!--And classpath tells where to find compiled files-->
+  <!--And args required args for MyInfArith java code-->
+  <target name="run" depends="compile">
+    <!-- Integer Tests -->
+    <java classname="${main.class}" fork="true" classpath="${build.dir}">
+      <arg line="${args}"/>
+    </java>
+
+  </target>
+
+</project>
